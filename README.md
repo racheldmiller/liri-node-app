@@ -8,4 +8,5 @@ You can use these commands to get what you want:
 `spotify-this-song` allows you to see results for a song.
 `do-what-it-says` ... to be continued. 
 
-So far, only the OMDB and the Bands in Town are working perfectly. 
+(So far, only the OMDB and the Bands in Town are working perfectly. 
+I also have screenshots but I'm not too sure how to add in screenshots).
