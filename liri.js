@@ -33,7 +33,7 @@ function liriBot(command, input) {
     case "concert-this":
       console.log(multipleWords);
       console.log(input);
-      //   concert(input);
+      performing(input);
       break;
     case "spotify-this-song":
       // music(input);
@@ -53,6 +53,25 @@ function liriBot(command, input) {
 // name of venue
 // venue location
 // date of event (use moment to format this as "MM/DD/YYYY")
+
+function performing(input) {
+  var queryURL =
+    "https://rest.bandsintown.com/artists/" +
+    input +
+    "/events?app_id=codingbootcamp";
+  console.log(queryURL);
+  axios.get(queryURL).then(function(response) {
+    var json = response.data;
+    console.log(
+      "Name of Venue: " +
+        json.venue.name +
+        "\nVenue Location: " +
+        json.venue.city +
+        "\nDate of Event: " +
+        json.venue.datetime
+    );
+  });
+}
 
 // ----------------------- SPOTIFY-THIS-SONG ---------------------------
 // function music(input) {
