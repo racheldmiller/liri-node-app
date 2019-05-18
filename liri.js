@@ -3,6 +3,7 @@
 var axios = require("axios");
 var fs = require("fs");
 var Spotify = require("node-spotify-api");
+var moment = require("moment");
 
 require("dotenv").config();
 
@@ -10,15 +11,6 @@ var keys = require("./keys.js");
 
 // SPOTIFY KEYS
 // var spotify = new Spotify(keys.spotify);
-
-// // OMDB
-// var axios = require("axios");
-
-// needs to be able to take in these commands
-// concert-this
-// spotify-this-song
-// movie-this
-// do-what-it-says
 
 // USER INPUT VARIABLES
 var multipleWords = process.argv.slice(3);
@@ -59,19 +51,22 @@ function performing(input) {
     "https://rest.bandsintown.com/artists/" +
     input +
     "/events?app_id=codingbootcamp";
-  console.log(queryURL);
+  // console.log(queryURL);
   axios.get(queryURL).then(function(response) {
-    var json = response.data;
+    var json = response.data[1];
+    console.log(json);
     console.log(
       "Name of Venue: " +
         json.venue.name +
         "\nVenue Location: " +
         json.venue.city +
         "\nDate of Event: " +
-        json.venue.datetime
+        moment(json.datetime).format("l")
     );
   });
 }
+
+// need to change format to
 
 // ----------------------- SPOTIFY-THIS-SONG ---------------------------
 // function music(input) {
@@ -88,10 +83,9 @@ function performing(input) {
 // album that the song is from
 
 // DEFAULT: "The Sign" by Ace of Base.
+// need to include what'd happen if there's an error.
 
 // --------------------------- MOVIE-THIS ---------------------------
-
-// QUESTION : HOW DO I KNOW IT'S THESE VALUES IN THE CONSOLE? I EITHER FOUND OLD EXAMPLES OR USED HW
 
 function movie(input) {
   var queryURL = "http://www.omdbapi.com/?t=" + input + "&apikey=trilogy";
@@ -120,7 +114,6 @@ function movie(input) {
 }
 
 // conditional statement if their criteria returns nothing
-
 // DEFAULT: If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
 // It's on Netflix!
 
