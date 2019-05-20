@@ -11,5 +11,5 @@ You can use these commands to get what you want:
 (So far, only the OMDB and the Bands in Town are working perfectly. 
 I also have screenshots but I'm not too sure how to add in screenshots).
 
-![./images/movie.png]
-![./images/concert.png]
+![images/movie.png]
+![images/concert.png]
