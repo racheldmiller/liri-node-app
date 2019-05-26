@@ -10,7 +10,7 @@ require("dotenv").config();
 var keys = require("./keys.js");
 
 // SPOTIFY KEYS
-// var spotify = new Spotify(keys.spotify);
+var spotify = new Spotify(keys.spotify);
 
 // USER INPUT VARIABLES
 var multipleWords = process.argv.slice(3);
@@ -28,7 +28,7 @@ function liriBot(command, input) {
       performing(input);
       break;
     case "spotify-this-song":
-      // music(input);
+      music(input);
       break;
     case "do-what-it-says":
       //   random(input);
@@ -40,47 +40,44 @@ function liriBot(command, input) {
 
 // ------------------------- CONCERT-THIS ----------------------------
 
-// will use Bands in Town Artist Events API ("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
-
-// name of venue
-// venue location
-// date of event (use moment to format this as "MM/DD/YYYY")
-
 function performing(input) {
   var queryURL =
     "https://rest.bandsintown.com/artists/" +
     input +
     "/events?app_id=codingbootcamp";
-  // console.log(queryURL);
   axios.get(queryURL).then(function(response) {
-    var json = response.data[1];
-    console.log(json);
+    var jsonData = response.data[0];
+    console.log(response.data);
+    console.log(jsonData);
     console.log(
       "Name of Venue: " +
-        json.venue.name +
-        "\nVenue Location: " +
-        json.venue.city +
+        jsonData.venue.name +
+        "\nVenue City: " +
+        jsonData.venue.city +
+        "\nVenue Country: " +
+        jsonData.venue.country +
         "\nDate of Event: " +
-        moment(json.datetime).format("l")
+        moment(jsonData.datetime).format("l")
     );
   });
 }
 
-// need to change format to
-
 // ----------------------- SPOTIFY-THIS-SONG ---------------------------
-// function music(input) {
-//   spotify
-//     .search({ type: "track", query: input, limit: 20 })
-//     .then(function(response) {
-//       console.log(response);
-//     });
-// }
-// var songTitle = "";
-// artist(s)
-// song's name
-// preview link of song from spotify
-// album that the song is from
+function music(input) {
+  spotify.search({ type: "track", query: input }).then(function(response) {
+    var jsonData = response.tracks.items[0];
+    console.log(
+      "Artist(s): " +
+        jsonData.artists[0].name +
+        "\nName of Song: " +
+        jsonData.name +
+        "\nPreview URL of Song: " +
+        jsonData.preview_url +
+        "\nAlbum: " +
+        jsonData.album.name
+    );
+  });
+}
 
 // DEFAULT: "The Sign" by Ace of Base.
 // need to include what'd happen if there's an error.
@@ -88,27 +85,31 @@ function performing(input) {
 // --------------------------- MOVIE-THIS ---------------------------
 
 function movie(input) {
+  // if (input === undefined) {
+  //   input = "Bloodsport";
+  // }
   var queryURL = "http://www.omdbapi.com/?t=" + input + "&apikey=trilogy";
   console.log(queryURL);
+
   axios.get(queryURL).then(function(response) {
-    var json = response.data;
+    var jsonData = response.data;
     console.log(
       "Title of the movie: " +
-        json.Title +
+        jsonData.Title +
         "\nYear the movie came out: " +
-        json.Year +
+        jsonData.Year +
         "\nIMDB Rating of the movie: " +
-        json.imdbRating +
+        jsonData.imdbRating +
         "\nRotten Tomatoes Rating of the movie: " +
-        json.Ratings[2].Value +
+        jsonData.Ratings[2].Value +
         "\nCountry where the movie was produced: " +
-        json.Country +
+        jsonData.Country +
         "\nLanguage of the movie: " +
-        json.Language +
+        jsonData.Language +
         "\nPlot of the movie: " +
-        json.Plot +
+        jsonData.Plot +
         "\nActors in the movie: " +
-        json.Actors
+        jsonData.Actors
     );
   });
 }
